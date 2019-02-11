@@ -6,4 +6,60 @@
     android:layout_height="match_parent"
     tools:context=".MediaPlayerActivity">
 
+    <LinearLayout
+        android:layout_width="408dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="8dp"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.995">
+
+        <Button
+            android:id="@+id/mp_previous"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@android:drawable/ic_media_previous"
+            android:gravity="center"
+            tools:layout_editor_absoluteX="116dp"
+            tools:layout_editor_absoluteY="589dp" />
+
+        <Button
+            android:id="@+id/mp_state"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@android:drawable/ic_media_play"
+            android:gravity="center"
+            tools:layout_editor_absoluteX="220dp"
+            tools:layout_editor_absoluteY="467dp" />
+
+        <Button
+            android:id="@+id/mp_next"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@android:drawable/ic_media_next"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toEndOf="@+id/mp_state"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.893" />
+
+    </LinearLayout>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
 </android.support.constraint.ConstraintLayout>
