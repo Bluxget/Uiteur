@@ -3,6 +3,9 @@
     package="net.bluxget.uiteur">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"
@@ -18,13 +21,15 @@
 
         <service
             android:name=".service.MediaPlayerService"
-            android:enabled="true"
-            android:exported="true" />
+            android:enabled="true" />
+        <service
+            android:name=".service.MySensorService"
+            android:enabled="true"  />
 
         <activity android:name=".activity.MediaPlayerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

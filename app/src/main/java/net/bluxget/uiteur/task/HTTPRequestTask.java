@@ -27,14 +27,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
  *
  * @author Jonathan B.
  */
-public class AuthTask extends AsyncTask<URL, Void, Long> {
+public class HTTPRequestTask extends AsyncTask<URL, Void, Long> {
 
-    private static final String LOG_TAG = AuthTask.class.getSimpleName();
+    private static final String LOG_TAG = HTTPRequestTask.class.getSimpleName();
 
     private MediaPlayerService mService = null;
     private Document mDocument = null;
 
-    public AuthTask(MediaPlayerService service) {
+    public HTTPRequestTask(MediaPlayerService service) {
         this.mService = service;
     }
 

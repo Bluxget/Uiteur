@@ -8,7 +8,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import net.bluxget.uiteur.receiver.MediaPlayerServiceReceiver;
-import net.bluxget.uiteur.task.AuthTask;
+import net.bluxget.uiteur.task.HTTPRequestTask;
 
 import org.w3c.dom.Document;
 
@@ -61,7 +61,7 @@ public class MediaPlayerService extends Service {
             Log.e("test", ex.getMessage());
         }
 
-        new AuthTask(this).execute(serviceURL);
+        new HTTPRequestTask(this).execute(serviceURL);
     }
 
     public void pause() {
@@ -91,7 +91,7 @@ public class MediaPlayerService extends Service {
                 Log.e("test", ex.getMessage());
             }
 
-            new AuthTask(this).execute(serviceURL);
+            new HTTPRequestTask(this).execute(serviceURL);
             this.end = 1;
         }
     }
