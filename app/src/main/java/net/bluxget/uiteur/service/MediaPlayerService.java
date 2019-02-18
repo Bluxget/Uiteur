@@ -12,8 +12,15 @@ import net.bluxget.uiteur.task.AuthTask;
 
 import org.w3c.dom.Document;
 
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  * MediaPlayer service, basic music function (start/stop & next/previous)
@@ -69,7 +76,40 @@ public class MediaPlayerService extends Service {
         Log.d("test", "next");
     }
 
+    private int end = 0;
     public void playlist(Document document) {
-        Log.d("test", document.getElementsByTagName("version").item(0).getAttributes().item(0).getTextContent());
+        Log.d("test", XMLToString(document));
+
+        if(this.end == 0) {
+            final String url = "http://uiteur.struct-it.fr/playlist.php";
+
+            URL serviceURL = null;
+
+            try {
+                serviceURL = new URL(url);
+            } catch (MalformedURLException ex) {
+                Log.e("test", ex.getMessage());
+            }
+
+            new AuthTask(this).execute(serviceURL);
+            this.end = 1;
+        }
+    }
+
+    public static String XMLToString(Document doc) {
+        try {
+            StringWriter sw = new StringWriter();
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+            transformer.transform(new DOMSource(doc), new StreamResult(sw));
+            return sw.toString();
+        } catch (Exception ex) {
+            throw new RuntimeException("Error converting to String", ex);
+        }
     }
 }

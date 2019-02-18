@@ -2,6 +2,7 @@ package net.bluxget.uiteur.task;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.webkit.CookieManager;
 
 import net.bluxget.uiteur.service.MediaPlayerService;
 
@@ -15,6 +16,8 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -58,6 +61,12 @@ public class AuthTask extends AsyncTask<URL, Void, Long> {
         connection.setConnectTimeout(10000);
         connection.setReadTimeout(5000);
 
+        CookieManager cookieManager = CookieManager.getInstance();
+        String cookieUiteur = cookieManager.getCookie("http://uiteur.struct-it.fr/");
+        if (cookieUiteur != null) {
+            connection.setRequestProperty("Cookie", cookieUiteur);
+        }
+
         try {
             connection.connect();
         } catch (IOException ex) {
@@ -66,18 +75,28 @@ public class AuthTask extends AsyncTask<URL, Void, Long> {
 
         try {
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                Map<String, List<String>> headerFields = connection.getHeaderFields();
+                List<String> cookiesHeader = headerFields.get("Set-Cookie");
+
+                if (cookiesHeader != null) {
+                    for (String cookie : cookiesHeader) {
+                        cookieManager.setCookie("http://uiteur.struct-it.fr/", cookie);
+                    }
+                }
+
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 StringBuffer buffer = new StringBuffer();
                 String inputLine;
+
                 while ((inputLine = reader.readLine()) != null) {
                     buffer.append(inputLine);
                 }
+
                 reader.close();
 
                 Log.d(LOG_TAG, "Answer: " + buffer.toString());
 
-                DocumentBuilderFactory builderFactory = DocumentBuilderFactory
-                        .newInstance();
+                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
                 InputSource inputSource = new InputSource(new StringReader(buffer.toString()));
                 this.mDocument = documentBuilder.parse(inputSource);
