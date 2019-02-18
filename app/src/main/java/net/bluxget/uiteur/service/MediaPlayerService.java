@@ -10,12 +10,10 @@ import android.util.Log;
 import net.bluxget.uiteur.receiver.MediaPlayerServiceReceiver;
 import net.bluxget.uiteur.task.AuthTask;
 
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
+import org.w3c.dom.Document;
+
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
 /**
  * MediaPlayer service, basic music function (start/stop & next/previous)
@@ -56,7 +54,7 @@ public class MediaPlayerService extends Service {
             Log.e("test", ex.getMessage());
         }
 
-        new AuthTask().execute(serviceURL);
+        new AuthTask(this).execute(serviceURL);
     }
 
     public void pause() {
@@ -69,5 +67,9 @@ public class MediaPlayerService extends Service {
 
     public void next() {
         Log.d("test", "next");
+    }
+
+    public void playlist(Document document) {
+        Log.d("test", document.getElementsByTagName("version").item(0).getAttributes().item(0).getTextContent());
     }
 }
