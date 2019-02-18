@@ -27,6 +27,7 @@
             android:layout_height="64dp"
             android:background="@android:drawable/ic_media_previous"
             android:gravity="center"
+            android:onClick="onClickPreviousBtn"
             tools:layout_editor_absoluteX="116dp"
             tools:layout_editor_absoluteY="589dp" />
 
@@ -37,6 +38,7 @@
             android:layout_height="64dp"
             android:background="@android:drawable/ic_media_play"
             android:gravity="center"
+            android:onClick="onClickPlayBtn"
             tools:layout_editor_absoluteX="220dp"
             tools:layout_editor_absoluteY="467dp" />
 
@@ -47,6 +49,7 @@
             android:layout_height="64dp"
             android:background="@android:drawable/ic_media_next"
             android:gravity="center"
+            android:onClick="onClickNextBtn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.1"

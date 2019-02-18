@@ -3,6 +3,11 @@ package net.bluxget.uiteur;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+/**
+ * Main Android Application activity
+ *
+ * @author Jonathan B
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
