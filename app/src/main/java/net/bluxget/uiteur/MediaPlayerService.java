@@ -35,4 +35,20 @@ public class MediaPlayerService extends Service {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+    public void play() {
+        Log.d("test", "play");
+    }
+
+    public void pause() {
+        Log.d("test", "pause");
+    }
+
+    public void previous() {
+        Log.d("test", "previous");
+    }
+
+    public void next() {
+        Log.d("test", "next");
+    }
 }

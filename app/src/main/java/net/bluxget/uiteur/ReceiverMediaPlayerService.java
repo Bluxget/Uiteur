@@ -5,6 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+/**
+ * MediaPlayerService receiver
+ *
+ * @author Jonathan B.
+ */
 public class ReceiverMediaPlayerService extends BroadcastReceiver {
 
     private MediaPlayerService mService;
@@ -17,19 +22,19 @@ public class ReceiverMediaPlayerService extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         switch (intent.getAction()) {
             case MediaPlayerService.ACTION_PLAY:
-                Log.d("test", "receive play");
+                this.mService.play();
 
                 break;
             case MediaPlayerService.ACTION_PAUSE:
-                Log.d("test", "receive pause");
+                this.mService.pause();
 
                 break;
             case MediaPlayerService.ACTION_PREVIOUS:
-                Log.d("test", "receive previous");
+                this.mService.previous();
 
                 break;
             case MediaPlayerService.ACTION_NEXT:
-                Log.d("test", "receive next");
+                this.mService.next();
 
                 break;
         }
