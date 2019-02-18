@@ -38,7 +38,7 @@
             android:layout_height="64dp"
             android:background="@android:drawable/ic_media_play"
             android:gravity="center"
-            android:onClick="onClickPlayBtn"
+            android:onClick="onClickStateBtn"
             tools:layout_editor_absoluteX="220dp"
             tools:layout_editor_absoluteY="467dp" />
 
