@@ -1,6 +1,7 @@
 package net.bluxget.uiteur;
 
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,24 +34,29 @@ public class MediaPlayerActivity extends AppCompatActivity {
     }
 
     public void onClickPreviousBtn(View v) {
-        Log.d("test", "previous");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(MediaPlayerService.ACTION_PREVIOUS));
     }
 
     public void onClickStateBtn(View v) {
         Button stateBtn = findViewById(R.id.mp_state);
+        String action;
 
         if (this.mPlay) {
-            Log.d("test", "stop");
-            this.mPlay = false;
             stateBtn.setBackgroundResource(android.R.drawable.ic_media_play);
+            this.mPlay = false;
+
+            action = MediaPlayerService.ACTION_PAUSE;
         } else {
-            Log.d("test", "play");
-            this.mPlay = true;
             stateBtn.setBackgroundResource(android.R.drawable.ic_media_pause);
+            this.mPlay = true;
+
+            action = MediaPlayerService.ACTION_PLAY;
         }
+
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(action));
     }
 
     public void onClickNextBtn(View v) {
-        Log.d("test", "next");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(MediaPlayerService.ACTION_NEXT));
     }
 }
