@@ -1,7 +1,9 @@
-package net.bluxget.uiteur;
+package net.bluxget.uiteur.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import net.bluxget.uiteur.R;
 
 /**
  * Main Android Application activity

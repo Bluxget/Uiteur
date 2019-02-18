@@ -1,12 +1,14 @@
-package net.bluxget.uiteur;
+package net.bluxget.uiteur.activity;
 
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import net.bluxget.uiteur.R;
+import net.bluxget.uiteur.service.MediaPlayerService;
 
 
 /**
@@ -33,10 +35,6 @@ public class MediaPlayerActivity extends AppCompatActivity {
         startService(mediaPlayer);
     }
 
-    public void onClickPreviousBtn(View v) {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(MediaPlayerService.ACTION_PREVIOUS));
-    }
-
     public void onClickStateBtn(View v) {
         Button stateBtn = findViewById(R.id.mp_state);
         String action;
@@ -54,6 +52,10 @@ public class MediaPlayerActivity extends AppCompatActivity {
         }
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(action));
+    }
+
+    public void onClickPreviousBtn(View v) {
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(MediaPlayerService.ACTION_PREVIOUS));
     }
 
     public void onClickNextBtn(View v) {

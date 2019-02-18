@@ -1,20 +1,21 @@
-package net.bluxget.uiteur;
+package net.bluxget.uiteur.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+
+import net.bluxget.uiteur.service.MediaPlayerService;
 
 /**
  * MediaPlayerService receiver
  *
  * @author Jonathan B.
  */
-public class ReceiverMediaPlayerService extends BroadcastReceiver {
+public class MediaPlayerServiceReceiver extends BroadcastReceiver {
 
     private MediaPlayerService mService;
 
-    public ReceiverMediaPlayerService(MediaPlayerService service) {
+    public MediaPlayerServiceReceiver(MediaPlayerService service) {
         this.mService = service;
     }
 
