@@ -9,6 +9,7 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -24,18 +25,15 @@ public class MySensorService extends Service {
 
     private static final String LOG_TAG = MySensorService.class.getSimpleName();
 
-    public final static String ACTION_SENSOR_TEMPERATURE = "sensor_temperature";
-    public final static String ACTION_SENSOR_LIGHT = "sensor_light";
-    public final static String ACTION_SENSOR_ACCELEROMETER = "sensor_accelerometer";
     public final static String ACTION_SENSOR_GYROSCOPE = "sensor_gyroscope";
     public final static String ACTION_SENSOR_LOCATION = "sensor_location";
 
     private int[] sensors = {Sensor.TYPE_GYROSCOPE};
 
+    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+        return null;
     }
 
     @Override
@@ -65,20 +63,6 @@ public class MySensorService extends Service {
         Intent intent = new Intent();
 
         switch (event.sensor.getType()) {
-            case Sensor.TYPE_AMBIENT_TEMPERATURE:
-                intent.setAction(MySensorService.ACTION_SENSOR_TEMPERATURE);
-                intent.putExtra("degrees", event.values[0]);
-                break;
-            case Sensor.TYPE_LIGHT:
-                intent.setAction(MySensorService.ACTION_SENSOR_LIGHT);
-                intent.putExtra("lux", event.values[0]);
-                break;
-            case Sensor.TYPE_ACCELEROMETER:
-                intent.setAction(MySensorService.ACTION_SENSOR_ACCELEROMETER);
-                intent.putExtra("x", event.values[0]);
-                intent.putExtra("y", event.values[1]);
-                intent.putExtra("z", event.values[2]);
-                break;
             case Sensor.TYPE_GYROSCOPE:
                 intent.setAction(MySensorService.ACTION_SENSOR_GYROSCOPE);
                 intent.putExtra("x", event.values[0]);

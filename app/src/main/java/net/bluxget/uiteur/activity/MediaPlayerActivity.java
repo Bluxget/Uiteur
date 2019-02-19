@@ -150,13 +150,13 @@ public class MediaPlayerActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(action));
     }
 
-    public void onClickPreviousBtn(View v) {
+    /*public void onClickPreviousBtn(View v) {
         //LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(MediaPlayerService.ACTION_PREVIOUS));
     }
 
     public void onClickNextBtn(View v) {
         //LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(MediaPlayerService.ACTION_NEXT));
-    }
+    }*/
 
     public void clickStateBtn() {
         Button stateBtn = findViewById(R.id.mp_state);
@@ -166,9 +166,9 @@ public class MediaPlayerActivity extends AppCompatActivity {
         stateBtn.callOnClick();
     }
 
-    public void clickNextBtn() {
+    /*public void clickNextBtn() {
         Button nextBtn = findViewById(R.id.mp_next);
 
         nextBtn.callOnClick();
-    }
+    }*/
 }

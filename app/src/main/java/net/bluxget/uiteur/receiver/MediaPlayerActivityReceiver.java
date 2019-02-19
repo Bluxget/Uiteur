@@ -3,6 +3,7 @@ package net.bluxget.uiteur.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import net.bluxget.uiteur.activity.MediaPlayerActivity;
 import net.bluxget.uiteur.service.MediaPlayerService;
@@ -29,8 +30,10 @@ public class MediaPlayerActivityReceiver extends BroadcastReceiver {
 
                 break;*/
             case MySensorService.ACTION_SENSOR_GYROSCOPE:
-                if(intent.getFloatExtra("x", 0)+intent.getFloatExtra("y", 0)+intent.getFloatExtra("z", 0) > 1) {
-                    this.mActivity.clickNextBtn();
+                float gyroscope = intent.getFloatExtra("x", 0) + intent.getFloatExtra("y", 0) + intent.getFloatExtra("z", 0);
+
+                if(gyroscope > 5 || gyroscope < -5) {
+                    this.mActivity.clickStateBtn();
                 }
 
                 break;
@@ -38,10 +41,10 @@ public class MediaPlayerActivityReceiver extends BroadcastReceiver {
                 this.mActivity.clickStateBtn();
 
                 break;
-            /*case MySensorService.ACTION_SENSOR_LOCATION:
-                this.mActivity.clickNextBtn();
+            case MySensorService.ACTION_SENSOR_LOCATION:
+                Log.d("Location", "Latitude:"+ intent.getDoubleExtra("latitude", 0) +" - Longitude: "+ intent.getDoubleExtra("longitude", 0) +" - Altitude: "+ intent.getDoubleExtra("altitude", 0));
 
-                break;*/
+                break;
         }
     }
 }

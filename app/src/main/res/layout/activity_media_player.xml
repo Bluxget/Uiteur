@@ -18,9 +18,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerVie">
+        app:layout_constraintTop_toBottomOf="@+id/playlist">
 
-        <Button
+        <!-- <Button
             android:id="@+id/mp_previous"
             style="@style/Widget.AppCompat.Button"
             android:layout_width="64dp"
@@ -29,7 +29,7 @@
             android:gravity="center"
             android:onClick="onClickPreviousBtn"
             tools:layout_editor_absoluteX="116dp"
-            tools:layout_editor_absoluteY="589dp" />
+            tools:layout_editor_absoluteY="589dp" /> -->
 
         <Button
             android:id="@+id/mp_state"
@@ -42,7 +42,7 @@
             tools:layout_editor_absoluteX="220dp"
             tools:layout_editor_absoluteY="467dp" />
 
-        <Button
+        <!-- <Button
             android:id="@+id/mp_next"
             style="@style/Widget.AppCompat.Button"
             android:layout_width="64dp"
@@ -55,7 +55,7 @@
             app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintStart_toEndOf="@+id/mp_state"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.893" />
+            app:layout_constraintVertical_bias="0.893" /> -->
 
     </LinearLayout>
 
