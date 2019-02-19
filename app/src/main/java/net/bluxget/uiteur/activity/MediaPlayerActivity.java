@@ -18,7 +18,6 @@ import net.bluxget.uiteur.receiver.MediaPlayerActivityReceiver;
 import net.bluxget.uiteur.service.MediaPlayerService;
 import net.bluxget.uiteur.service.MySensorService;
 
-
 /**
  * MediaPlayer main interface, play/stop & next/previous buttons
  *
