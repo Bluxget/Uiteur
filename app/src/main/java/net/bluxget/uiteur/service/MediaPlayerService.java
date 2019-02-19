@@ -53,15 +53,7 @@ public class MediaPlayerService extends Service {
 
         final String url = "http://uiteur.struct-it.fr/login.php?user="+ "uiteur" +"&pwd="+ "test";
 
-        URL serviceURL = null;
-
-        try {
-            serviceURL = new URL(url);
-        } catch (MalformedURLException ex) {
-            Log.e("test", ex.getMessage());
-        }
-
-        new HTTPRequestTask(this).execute(serviceURL);
+        new HTTPRequestTask(this).execute(url);
     }
 
     public void pause() {
@@ -83,15 +75,7 @@ public class MediaPlayerService extends Service {
         if(this.end == 0) {
             final String url = "http://uiteur.struct-it.fr/playlist.php";
 
-            URL serviceURL = null;
-
-            try {
-                serviceURL = new URL(url);
-            } catch (MalformedURLException ex) {
-                Log.e("test", ex.getMessage());
-            }
-
-            new HTTPRequestTask(this).execute(serviceURL);
+            new HTTPRequestTask(this).execute(url);
             this.end = 1;
         }
     }

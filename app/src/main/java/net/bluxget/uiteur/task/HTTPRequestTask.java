@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.List;
@@ -23,11 +24,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
- * Auth task
+ * HTTPRequestTask task
  *
  * @author Jonathan B.
  */
-public class HTTPRequestTask extends AsyncTask<URL, Void, Long> {
+public class HTTPRequestTask extends AsyncTask<String, Void, Boolean> {
 
     private static final String LOG_TAG = HTTPRequestTask.class.getSimpleName();
 
@@ -38,15 +39,21 @@ public class HTTPRequestTask extends AsyncTask<URL, Void, Long> {
         this.mService = service;
     }
 
-    protected Long doInBackground(URL... urls) {
-        URL serviceURL = urls[0];
+    protected Boolean doInBackground(String... urls) {
+        URL serviceURL;
+
+        try {
+            serviceURL = new URL(urls[0]);
+        } catch (MalformedURLException ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+
+            return false;
+        }
 
         HttpURLConnection connection = null;
 
         try {
             connection = (HttpURLConnection) serviceURL.openConnection();
-
-            Log.d(LOG_TAG, "Connection OK");
         } catch (IOException ex) {
             Log.e(LOG_TAG, ex.getMessage());
         }
@@ -62,7 +69,7 @@ public class HTTPRequestTask extends AsyncTask<URL, Void, Long> {
         connection.setReadTimeout(5000);
 
         CookieManager cookieManager = CookieManager.getInstance();
-        String cookieUiteur = cookieManager.getCookie("http://uiteur.struct-it.fr/");
+        String cookieUiteur = cookieManager.getCookie(urls[0]);
         if (cookieUiteur != null) {
             connection.setRequestProperty("Cookie", cookieUiteur);
         }
@@ -80,7 +87,7 @@ public class HTTPRequestTask extends AsyncTask<URL, Void, Long> {
 
                 if (cookiesHeader != null) {
                     for (String cookie : cookiesHeader) {
-                        cookieManager.setCookie("http://uiteur.struct-it.fr/", cookie);
+                        cookieManager.setCookie(urls[0], cookie);
                     }
                 }
 
@@ -105,10 +112,10 @@ public class HTTPRequestTask extends AsyncTask<URL, Void, Long> {
             Log.e(LOG_TAG, ex.getMessage());
         }
 
-        return (long) 0;
+        return true;
     }
 
-    protected void onPostExecute(Long result) {
+    protected void onPostExecute(Boolean result) {
         this.mService.playlist(this.mDocument);
     }
 }
