@@ -1,7 +1,11 @@
 package net.bluxget.uiteur.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,7 +46,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
         startService(intentSensor);
 
-        String[] sensorFilter = { MySensorService.ACTION_SENSOR_TEMPERATURE, MySensorService.ACTION_SENSOR_LIGHT, MySensorService.ACTION_SENSOR_ACCELEROMETER, MySensorService.ACTION_SENSOR_LOCATION };
+        String[] sensorFilter = { MySensorService.ACTION_SENSOR_GYROSCOPE, MySensorService.ACTION_SENSOR_LOCATION };
 
         IntentFilter sensorIntentFilter = new IntentFilter();
 
@@ -51,6 +55,13 @@ public class MediaPlayerActivity extends AppCompatActivity {
         }
 
         LocalBroadcastManager.getInstance(this).registerReceiver(new MediaPlayerActivityReceiver(this), sensorIntentFilter);
+
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.ACCESS_FINE_LOCATION }, 200);
+            }
+        }
     }
 
     public void onClickStateBtn(View v) {
@@ -80,9 +91,9 @@ public class MediaPlayerActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(MediaPlayerService.ACTION_NEXT));
     }
 
-    public void clickPreviousBtn() {
-        Button previousBtn = findViewById(R.id.mp_previous);
+    public void clickNextBtn() {
+        Button nextBtn = findViewById(R.id.mp_next);
 
-        previousBtn.callOnClick();
+        nextBtn.callOnClick();
     }
 }

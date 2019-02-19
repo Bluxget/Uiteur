@@ -14,6 +14,9 @@ import android.util.Log;
 
 import net.bluxget.uiteur.listener.MyLocationServiceListener;
 import net.bluxget.uiteur.listener.MySensorServiceListener;
+import net.bluxget.uiteur.task.HTTPRequestTask;
+
+import java.util.Arrays;
 
 /**
  * Sensor & Location service
@@ -22,12 +25,15 @@ import net.bluxget.uiteur.listener.MySensorServiceListener;
  */
 public class MySensorService extends Service {
 
+    private static final String LOG_TAG = HTTPRequestTask.class.getSimpleName();
+
     public final static String ACTION_SENSOR_TEMPERATURE = "sensor_temperature";
     public final static String ACTION_SENSOR_LIGHT = "sensor_light";
     public final static String ACTION_SENSOR_ACCELEROMETER = "sensor_accelerometer";
+    public final static String ACTION_SENSOR_GYROSCOPE = "sensor_gyroscope";
     public final static String ACTION_SENSOR_LOCATION = "sensor_location";
 
-    private int[] sensors = {Sensor.TYPE_AMBIENT_TEMPERATURE, Sensor.TYPE_LIGHT, Sensor.TYPE_ACCELEROMETER};
+    private int[] sensors = {Sensor.TYPE_GYROSCOPE};
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -45,12 +51,6 @@ public class MySensorService extends Service {
             sensorManager.registerListener(sensorServiceListener, sensorManager.getDefaultSensor(sensor), SensorManager.SENSOR_DELAY_NORMAL);
         }
 
-        /*try {
-            sensorManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, sensorServiceListener);
-        } catch (SecurityException ex) {
-            Log.e("location", ex.getMessage());
-        }*/
-
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         MyLocationServiceListener locationServiceListener = new MyLocationServiceListener(this);
@@ -58,7 +58,7 @@ public class MySensorService extends Service {
         try {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationServiceListener);
         } catch (SecurityException ex) {
-            Log.e("location", ex.getMessage());
+            Log.e(LOG_TAG, ex.getMessage());
         }
 
         return START_STICKY;
@@ -78,6 +78,12 @@ public class MySensorService extends Service {
                 break;
             case Sensor.TYPE_ACCELEROMETER:
                 intent.setAction(MySensorService.ACTION_SENSOR_ACCELEROMETER);
+                intent.putExtra("x", event.values[0]);
+                intent.putExtra("y", event.values[1]);
+                intent.putExtra("z", event.values[2]);
+                break;
+            case Sensor.TYPE_GYROSCOPE:
+                intent.setAction(MySensorService.ACTION_SENSOR_GYROSCOPE);
                 intent.putExtra("x", event.values[0]);
                 intent.putExtra("y", event.values[1]);
                 intent.putExtra("z", event.values[2]);

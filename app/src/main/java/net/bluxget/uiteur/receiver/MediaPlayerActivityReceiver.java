@@ -24,10 +24,19 @@ public class MediaPlayerActivityReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         switch (intent.getAction()) {
-            case MySensorService.ACTION_SENSOR_ACCELEROMETER:
+            /*case MySensorService.ACTION_SENSOR_ACCELEROMETER:
                 this.mActivity.clickPreviousBtn();
 
+                break;*/
+            case MySensorService.ACTION_SENSOR_GYROSCOPE:
+                if(intent.getFloatExtra("x", 0)+intent.getFloatExtra("y", 0)+intent.getFloatExtra("z", 0) > 1) {
+                    this.mActivity.clickNextBtn();
+                }
                 break;
+            /*case MySensorService.ACTION_SENSOR_LOCATION:
+                this.mActivity.clickNextBtn();
+
+                break;*/
         }
     }
 }

@@ -33,10 +33,11 @@ public class HTTPRequestTask extends AsyncTask<String, Void, Boolean> {
     private static final String LOG_TAG = HTTPRequestTask.class.getSimpleName();
 
     private MediaPlayerService mService;
-    private Document mDocument = null;
+    private Document mDocument;
 
     public HTTPRequestTask(MediaPlayerService service) {
         this.mService = service;
+        this.mDocument = null;
     }
 
     /**
