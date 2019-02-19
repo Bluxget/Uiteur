@@ -50,7 +50,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         viewHolder.name.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 // Todo: intent to service music
-                Intent intent = new Intent(MediaPlayerService.ACTION_PLAY);
+                Intent intent = new Intent(MediaPlayerService.ACTION_PREPARE);
 
                 intent.putExtra("playid", playItem.getId());
 

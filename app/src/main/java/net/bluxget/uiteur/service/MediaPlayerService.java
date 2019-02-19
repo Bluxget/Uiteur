@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import net.bluxget.uiteur.activity.MediaPlayerActivity;
 import net.bluxget.uiteur.data.access.DataHandler;
 import net.bluxget.uiteur.receiver.MediaPlayerServiceReceiver;
 
@@ -24,14 +25,14 @@ public class MediaPlayerService extends Service {
 
     private static final String LOG_TAG = ApiService.class.getSimpleName();
 
-    public static final String ACTION_PLAY = "mp_play", ACTION_PAUSE = "mp_pause";
+    public static final String ACTION_PLAY = "mp_play", ACTION_PAUSE = "mp_pause", ACTION_PREPARE = "mp_prepare";
 
     private DataHandler mDataHandler;
     private MediaPlayer mMediaPlayer;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String[] actions = {ACTION_PLAY, ACTION_PAUSE};
+        String[] actions = {ACTION_PLAY, ACTION_PAUSE, ACTION_PREPARE};
 
         mDataHandler = new DataHandler(this);
 
@@ -51,7 +52,7 @@ public class MediaPlayerService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    public void play(int playId) {
+    public void prepare(int playId) {
         this.mDataHandler.open();
         String filename = this.mDataHandler.getPlayFile(playId);
         this.mDataHandler.close();
@@ -61,13 +62,18 @@ public class MediaPlayerService extends Service {
                 File file = new File(getFilesDir(), filename);
                 this.mMediaPlayer.setDataSource(getApplicationContext(), Uri.fromFile(file));
                 this.mMediaPlayer.prepare();
-                this.mMediaPlayer.start();
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(MediaPlayerActivity.ACTION_PLAY));
             } catch (Exception ex) {
                 Log.e(LOG_TAG, "Unable to play sound");
             }
         } else {
             Log.d(LOG_TAG, "No file found for play: " + playId);
         }
+    }
+
+    public void play() {
+        this.mMediaPlayer.start();
     }
 
     public void pause() {

@@ -46,6 +46,8 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = ApiService.class.getSimpleName();
 
+    public static final String ACTION_PLAY = "mp_activity_play";
+
     private boolean mPlay = false;
 
     private DataHandler mDataHandler;
@@ -119,6 +121,8 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
         LocalBroadcastManager.getInstance(this).registerReceiver(new MediaPlayerActivityReceiver(this), sensorIntentFilter);
 
+        LocalBroadcastManager.getInstance(this).registerReceiver(new MediaPlayerActivityReceiver(this), new IntentFilter(ACTION_PLAY));
+
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
             if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
             } else {
@@ -152,6 +156,14 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
     public void onClickNextBtn(View v) {
         //LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(MediaPlayerService.ACTION_NEXT));
+    }
+
+    public void clickStateBtn() {
+        Button stateBtn = findViewById(R.id.mp_state);
+
+        this.mPlay = false;
+
+        stateBtn.callOnClick();
     }
 
     public void clickNextBtn() {

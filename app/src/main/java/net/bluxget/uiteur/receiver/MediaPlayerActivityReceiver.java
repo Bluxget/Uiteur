@@ -32,6 +32,11 @@ public class MediaPlayerActivityReceiver extends BroadcastReceiver {
                 if(intent.getFloatExtra("x", 0)+intent.getFloatExtra("y", 0)+intent.getFloatExtra("z", 0) > 1) {
                     this.mActivity.clickNextBtn();
                 }
+
+                break;
+            case MediaPlayerActivity.ACTION_PLAY:
+                this.mActivity.clickStateBtn();
+
                 break;
             /*case MySensorService.ACTION_SENSOR_LOCATION:
                 this.mActivity.clickNextBtn();
