@@ -23,19 +23,11 @@ public class MediaPlayerServiceReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         switch (intent.getAction()) {
             case MediaPlayerService.ACTION_PLAY:
-                this.mService.play();
+                this.mService.play(intent.getIntExtra("playid", 0));
 
                 break;
             case MediaPlayerService.ACTION_PAUSE:
                 this.mService.pause();
-
-                break;
-            case MediaPlayerService.ACTION_PREVIOUS:
-                this.mService.previous();
-
-                break;
-            case MediaPlayerService.ACTION_NEXT:
-                this.mService.next();
 
                 break;
         }

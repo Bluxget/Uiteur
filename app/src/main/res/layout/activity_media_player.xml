@@ -18,7 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView">
+        app:layout_constraintTop_toBottomOf="@+id/recyclerVie">
 
         <Button
             android:id="@+id/mp_previous"
@@ -69,7 +69,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/playlist"
         android:layout_width="395dp"
-        android:layout_height="619dp"
+        android:layout_height="282dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"

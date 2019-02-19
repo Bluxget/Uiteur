@@ -3,24 +3,17 @@ package net.bluxget.uiteur.service;
 import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import net.bluxget.uiteur.data.access.DataHandler;
 import net.bluxget.uiteur.receiver.MediaPlayerServiceReceiver;
-import net.bluxget.uiteur.task.HTTPRequestTask;
 
-import org.w3c.dom.Document;
-
-import java.io.StringWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+import java.io.File;
 
 /**
  * MediaPlayer service, basic music function (start/stop & next/previous)
@@ -29,11 +22,21 @@ import javax.xml.transform.stream.StreamResult;
  */
 public class MediaPlayerService extends Service {
 
-    public static final String ACTION_PLAY = "mp_play", ACTION_PAUSE = "mp_pause", ACTION_PREVIOUS = "mp_previous", ACTION_NEXT = "mp_next";
+    private static final String LOG_TAG = ApiService.class.getSimpleName();
+
+    public static final String ACTION_PLAY = "mp_play", ACTION_PAUSE = "mp_pause";
+
+    private DataHandler mDataHandler;
+    private MediaPlayer mMediaPlayer;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String[] actions = {ACTION_PLAY, ACTION_PAUSE, ACTION_NEXT, ACTION_PREVIOUS};
+        String[] actions = {ACTION_PLAY, ACTION_PAUSE};
+
+        mDataHandler = new DataHandler(this);
+
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
         for (String action : actions) {
             LocalBroadcastManager.getInstance(this).registerReceiver(new MediaPlayerServiceReceiver(this), new IntentFilter(action));
@@ -48,27 +51,30 @@ public class MediaPlayerService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    public void play() {
-        Log.d("test", "play");
+    public void play(int playId) {
+        this.mDataHandler.open();
+        String filename = this.mDataHandler.getPlayFile(playId);
+        this.mDataHandler.close();
 
-        final String url = "http://uiteur.struct-it.fr/login.php?user="+ "uiteur" +"&pwd="+ "test";
-
-        new HTTPRequestTask(this).execute(url);
+        if(filename.length() > 0) {
+            try {
+                File file = new File(getFilesDir(), filename);
+                this.mMediaPlayer.setDataSource(getApplicationContext(), Uri.fromFile(file));
+                this.mMediaPlayer.prepare();
+                this.mMediaPlayer.start();
+            } catch (Exception ex) {
+                Log.e(LOG_TAG, "Unable to play sound");
+            }
+        } else {
+            Log.d(LOG_TAG, "No file found for play: " + playId);
+        }
     }
 
     public void pause() {
-        Log.d("test", "pause");
+        this.mMediaPlayer.pause();
     }
 
-    public void previous() {
-        Log.d("test", "previous");
-    }
-
-    public void next() {
-        Log.d("test", "next");
-    }
-
-    private int end = 0;
+    /*private int end = 0;
     public void playlist(Document document) {
         Log.d("test", XMLToString(document));
 
@@ -95,5 +101,5 @@ public class MediaPlayerService extends Service {
         } catch (Exception ex) {
             throw new RuntimeException("Error converting to String", ex);
         }
-    }
+    }*/
 }

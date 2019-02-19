@@ -14,9 +14,6 @@ import android.util.Log;
 
 import net.bluxget.uiteur.listener.MyLocationServiceListener;
 import net.bluxget.uiteur.listener.MySensorServiceListener;
-import net.bluxget.uiteur.task.HTTPRequestTask;
-
-import java.util.Arrays;
 
 /**
  * Sensor & Location service
@@ -25,7 +22,7 @@ import java.util.Arrays;
  */
 public class MySensorService extends Service {
 
-    private static final String LOG_TAG = HTTPRequestTask.class.getSimpleName();
+    private static final String LOG_TAG = MySensorService.class.getSimpleName();
 
     public final static String ACTION_SENSOR_TEMPERATURE = "sensor_temperature";
     public final static String ACTION_SENSOR_LIGHT = "sensor_light";
