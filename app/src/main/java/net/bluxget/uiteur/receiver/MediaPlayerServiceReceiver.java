@@ -34,7 +34,6 @@ public class MediaPlayerServiceReceiver extends BroadcastReceiver {
 
                 break;
             case MediaPlayerService.ACTION_PREPARE:
-
                 this.mService.prepare(intent.getIntExtra("playid", 0));
 
                 break;
