@@ -24,7 +24,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
- * HTTPRequestTask task
+ * HTTPRequestTask task, take an XML from website
  *
  * @author Jonathan B.
  */
@@ -32,13 +32,19 @@ public class HTTPRequestTask extends AsyncTask<String, Void, Boolean> {
 
     private static final String LOG_TAG = HTTPRequestTask.class.getSimpleName();
 
-    private MediaPlayerService mService = null;
+    private MediaPlayerService mService;
     private Document mDocument = null;
 
     public HTTPRequestTask(MediaPlayerService service) {
         this.mService = service;
     }
 
+    /**
+     * Connect to website and get an XML
+     *
+     * @param urls i = 0 -> Website URL
+     * @return true if success, false if error (who'll show in Logcat)
+     */
     protected Boolean doInBackground(String... urls) {
         URL serviceURL;
 
@@ -50,18 +56,22 @@ public class HTTPRequestTask extends AsyncTask<String, Void, Boolean> {
             return false;
         }
 
-        HttpURLConnection connection = null;
+        HttpURLConnection connection;
 
         try {
             connection = (HttpURLConnection) serviceURL.openConnection();
         } catch (IOException ex) {
             Log.e(LOG_TAG, ex.getMessage());
+
+            return false;
         }
 
         try {
             connection.setRequestMethod("GET");
         } catch (ProtocolException ex) {
             Log.e(LOG_TAG, ex.getMessage());
+
+            return false;
         }
 
         connection.setDoOutput(true);
@@ -78,6 +88,8 @@ public class HTTPRequestTask extends AsyncTask<String, Void, Boolean> {
             connection.connect();
         } catch (IOException ex) {
             Log.e(LOG_TAG, ex.getMessage());
+
+            return false;
         }
 
         try {
@@ -110,12 +122,16 @@ public class HTTPRequestTask extends AsyncTask<String, Void, Boolean> {
             }
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
+
+            return false;
         }
 
         return true;
     }
 
     protected void onPostExecute(Boolean result) {
-        this.mService.playlist(this.mDocument);
+        if(result) {
+            this.mService.playlist(this.mDocument);
+        }
     }
 }
