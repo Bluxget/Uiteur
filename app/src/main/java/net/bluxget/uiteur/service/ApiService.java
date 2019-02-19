@@ -37,7 +37,7 @@ public class ApiService extends Service {
 
     private DataHandler mDataHandler;
 
-    private static enum SERVICE_STATE {
+    private enum SERVICE_STATE {
         NOT_LOGGED_IN,
         LOGGED_IN}
 
@@ -112,11 +112,13 @@ public class ApiService extends Service {
                 Intent intent = new Intent(this, MediaPlayerActivity.class);
                 intent.putExtra("id", this.mId);
                 intent.putExtra("url", this.mURL);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             } else if(!success) {
                 mState = SERVICE_STATE.NOT_LOGGED_IN;
 
                 Intent intent = new Intent(this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             } else {
                 // Default values are used for test purpose
@@ -125,10 +127,11 @@ public class ApiService extends Service {
                 Intent intent = new Intent(this, MediaPlayerActivity.class);
                 intent.putExtra("id", this.mId);
                 intent.putExtra("url", this.mURL);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         } catch (Exception ex) {
-            Log.e(LOG_TAG, "XML bad format received");
+            Log.e(LOG_TAG, ex.getMessage());
         }
     }
 
@@ -167,11 +170,13 @@ public class ApiService extends Service {
                 intent.putExtra("url", this.mURL);
                 intent.putExtra("playlist", playListName);
                 intent.putExtra("playlistid", playListId);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             } else if(!success) {
                 mState = SERVICE_STATE.NOT_LOGGED_IN;
 
                 Intent intent = new Intent(this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             } else {
                 // Default values are used for test purpose
@@ -180,6 +185,7 @@ public class ApiService extends Service {
                 intent.putExtra("url", this.mURL);
                 intent.putExtra("playlist", "Unknown");
                 intent.putExtra("playlistid", 0);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         } catch (Exception ex) {

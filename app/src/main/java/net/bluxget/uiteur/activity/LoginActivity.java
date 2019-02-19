@@ -125,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ApiService.class);
             intent.putExtra("name", email);
             intent.putExtra("pwd", password);
+
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(intent);
             } else {

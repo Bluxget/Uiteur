@@ -4,19 +4,33 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import net.bluxget.uiteur.R;
+import net.bluxget.uiteur.data.PlayItem;
+import net.bluxget.uiteur.data.access.DataHandler;
 import net.bluxget.uiteur.receiver.MediaPlayerActivityReceiver;
+import net.bluxget.uiteur.service.ApiService;
 import net.bluxget.uiteur.service.MediaPlayerService;
 import net.bluxget.uiteur.service.MySensorService;
+
+import java.util.ArrayList;
 
 /**
  * MediaPlayer main interface, play/stop & next/previous buttons
@@ -27,19 +41,63 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
     private boolean mPlay = false;
 
+    private DataHandler mDataHandler;
+    private MediaPlayer mMediaPlayer;
+
+    private String mPlayListName;
+    private static int mPlayListId = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_player);
+
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("id");
+        String url = intent.getStringExtra("url");
+
+        mDataHandler = new DataHandler(this);
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+        mPlayListName = intent.getStringExtra("playlist");
+        mPlayListId = intent.getIntExtra("playlistid", -1);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        Intent mediaPlayer = new Intent(this, MediaPlayerService.class);
+        /*Intent mediaPlayer = new Intent(this, MediaPlayerService.class);
 
-        startService(mediaPlayer);
+        startService(mediaPlayer);*/
+
+        if(mPlayListId > -1) {
+            mDataHandler.open();
+            ArrayList<PlayItem> playList = mDataHandler.getPlayList();
+            mDataHandler.close();
+
+            ListView playListView = findViewById(R.id.playlist);
+            playListView.setAdapter(null);
+
+            if (!playList.isEmpty()) {
+                ArrayList<String> playlistString = new ArrayList<>();
+
+                for(PlayItem item : playList) {
+                    playlistString.add(item.getName() +" - "+ item.getAuthor() +" - "+ item.getRecord());
+                }
+
+                final ArrayAdapter<String> adapter = new ArrayAdapter<>(MediaPlayerActivity.this, android.R.layout.simple_list_item_1, playlistString);
+                playListView.setAdapter(adapter);
+            }
+        } else {
+            Intent intent = new Intent(this, ApiService.class);
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent);
+            } else {
+                startService(intent);
+            }
+        }
 
         Intent intentSensor = new Intent(this, MySensorService.class);
 
