@@ -60,15 +60,16 @@ public class MediaPlayerService extends Service {
         if(filename.length() > 0) {
             try {
                 File file = new File(getFilesDir(), filename);
+                this.mMediaPlayer.reset();
                 this.mMediaPlayer.setDataSource(getApplicationContext(), Uri.fromFile(file));
                 this.mMediaPlayer.prepare();
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(MediaPlayerActivity.ACTION_PLAY));
             } catch (Exception ex) {
-                Log.e(LOG_TAG, "Unable to play sound");
+                //Log.e(LOG_TAG, "Unable to play sound");
             }
         } else {
-            Log.d(LOG_TAG, "No file found for play: " + playId);
+            Log.e(LOG_TAG, "No file found for play: " + playId);
         }
     }
 
