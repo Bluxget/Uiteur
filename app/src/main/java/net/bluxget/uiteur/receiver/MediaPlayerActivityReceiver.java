@@ -33,7 +33,7 @@ public class MediaPlayerActivityReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         switch (intent.getAction()) {
             case MySensorService.ACTION_SENSOR_GYROSCOPE:
-                Log.d("Location", "x: "+ intent.getFloatExtra("x", 0) +" - y: "+ intent.getFloatExtra("y", 0) +" - z: "+ intent.getFloatExtra("z", 0));
+                Log.d("Gyroscope", "x: "+ intent.getFloatExtra("x", 0) +" - y: "+ intent.getFloatExtra("y", 0) +" - z: "+ intent.getFloatExtra("z", 0));
 
                 break;
             case MediaPlayerActivity.ACTION_PLAY:
