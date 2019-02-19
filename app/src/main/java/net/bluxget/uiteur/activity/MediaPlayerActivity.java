@@ -12,6 +12,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +47,11 @@ public class MediaPlayerActivity extends AppCompatActivity {
     private DataHandler mDataHandler;
     private MediaPlayer mMediaPlayer;
 
+    private RecyclerView mRecyclerView;
+    private RecyclerViewAdapter mAdapter;
+
+    private ArrayList<PlayItem> mPlayList;
+
     private String mPlayListName;
     private static int mPlayListId = -1;
 
@@ -62,34 +70,31 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
         mPlayListName = intent.getStringExtra("playlist");
         mPlayListId = intent.getIntExtra("playlistid", -1);
+
+        mPlayList = new ArrayList<>();
+
+        mRecyclerView = findViewById(R.id.playlist);
+
+        mAdapter = new RecyclerViewAdapter(mPlayList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
         /*Intent mediaPlayer = new Intent(this, MediaPlayerService.class);
 
         startService(mediaPlayer);*/
 
         if(mPlayListId > -1) {
+            mPlayList.clear();
+
             mDataHandler.open();
-            ArrayList<PlayItem> playList = mDataHandler.getPlayList();
+            mPlayList.addAll(mDataHandler.getPlayList());
             mDataHandler.close();
-
-            ListView playListView = findViewById(R.id.playlist);
-            playListView.setAdapter(null);
-
-            if (!playList.isEmpty()) {
-                ArrayList<String> playlistString = new ArrayList<>();
-
-                for(PlayItem item : playList) {
-                    playlistString.add(item.getName() +" - "+ item.getAuthor() +" - "+ item.getRecord());
-                }
-
-                final ArrayAdapter<String> adapter = new ArrayAdapter<>(MediaPlayerActivity.this, android.R.layout.simple_list_item_1, playlistString);
-                playListView.setAdapter(adapter);
-            }
         } else {
             Intent intent = new Intent(this, ApiService.class);
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
